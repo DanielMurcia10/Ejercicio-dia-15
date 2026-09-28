@@ -1,3 +1,5 @@
+from employee import Empleado  # solo para usar la validacion del telefono
+
 def mostrar_menu(): #funcion que contiene el menu del programa 
 
     print("\t ====================================")
@@ -43,6 +45,16 @@ def _pedir_si_no(mensaje): # funcion que valida la respuesta del usuario
             return False
         print("Responde 's' para si o 'n' para no.")
 
+def _pedir_telefono(mensaje):
+    """Pide un telefono hasta que sea valido.
+    Recibe el mensaje a mostrar y devuelve el telefono como texto.
+    La regla de validacion esta en Empleado.validar_telefono."""
+    while True:
+        try:
+            return Empleado.validar_telefono(input(mensaje))
+        except ValueError as error:
+            print(f"{error} Intentalo de nuevo.")
+
 def pedir_datos_nuevo_empleado():
     print("\n-- Ingresa los datos del nuevo empleado --\n")
     
@@ -52,6 +64,7 @@ def pedir_datos_nuevo_empleado():
     AnioIngreso = _pedir_entero("Anio de ingreso a la empresa: ")
     TiempoTrabajando = _pedir_entero("Tiempo trabajando en la empresa (anios): ")
     email = _pedir_texto("Email: ")
+    telefono = _pedir_telefono("Telefono: ")
     rol = _pedir_texto("Rol / departamento: ")
     horas_por_dia = _pedir_decimal("Horas trabajadas al dia: ")
     vacaciones_anuales = _pedir_entero("Dias de vacaciones anuales: ")
@@ -69,6 +82,7 @@ def pedir_datos_nuevo_empleado():
         "AnioIngreso": AnioIngreso,
         "TiempoTrabajando": TiempoTrabajando,
         "email": email,
+        "telefono": telefono,
         "rol": rol,
         "horas_por_dia": horas_por_dia,
         "vacaciones_anuales": vacaciones_anuales,
@@ -91,6 +105,7 @@ def pedir_cambio_empleado(empleado):
     print("7. Vacaciones anuales")
     print("8. Bonos")
     print("9. Comision")
+    print("10. Telefono")
     print("0. Terminar edicion")
     
     opcion = input("Opcion: ").strip()
@@ -118,6 +133,8 @@ def pedir_cambio_empleado(empleado):
             empleado.porcentaje_comision = _pedir_decimal("Nuevo porcentaje de comision: ")
         else:
             empleado.porcentaje_comision = 0.0
+    elif opcion == "10":
+        empleado.telefono = _pedir_telefono("Nuevo telefono: ")
     elif opcion == "0":
         print("\nEdicion finalizada.\n")
     else:
@@ -143,6 +160,7 @@ def mostrar_info_empleado(empleado, salario_neto, monto_comision):
     print(f"ID: {empleado.id}")
     print(f"Nombre: {empleado.nombre}")
     print(f"Rol / departamento: {empleado.rol}")
+    print(f"Telefono: {empleado.telefono}")
     print(f"Edad: {empleado.edad}")
     print(f"Anio de ingreso: {empleado.AnioIngreso}")
     print(f"Tiempo trabajando: {empleado.TiempoTrabajando} anios")
