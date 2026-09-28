@@ -7,6 +7,11 @@ siguiente_id = 1 #contador inicializado en 1
 
 
 def obtener_empleado_por_id(id_buscado): #funcion que busca al empleado por medio de su ID
+    """Busca un empleado en la lista por su ID.
+
+    Recibe: id_buscado (int), el ID del empleado a buscar.
+    Devuelve: el objeto Empleado si lo encuentra, o None si no existe.
+    """
     print(len(lista_empleados))
     for empleado in lista_empleados:
         if empleado.id == id_buscado:
@@ -24,7 +29,7 @@ def agregar_empleado(datos):
 
 #funcion para generar y guardar los empleados en un archivo json 
 def guardar_empleado():
-    datos = [vars(e) for e in lista_empleados]
+    datos = [e.a_diccionario() for e in lista_empleados]
     with open("empleados.json", "w") as archivo:
         json.dump(datos, archivo, indent=2)
 
@@ -39,7 +44,7 @@ def cargar_empleado():
         return
 
     for dato in datos:
-        empleado = Empleado(**dato)
+        empleado = Empleado.desde_diccionario(dato)
         lista_empleados.append(empleado)
 
     if lista_empleados:
@@ -72,6 +77,8 @@ def editar_empleado_por_id(empleado, campo, valor):
         empleado.rol = valor
     elif campo == "email":
         empleado.email = valor
+    elif campo == "telefono":
+        empleado.telefono = valor
     elif campo == "horas_por_dia":
         empleado.horas_por_dia = valor
     elif campo == "vacaciones_anuales":
